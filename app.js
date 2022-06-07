@@ -1,20 +1,13 @@
 let myLibrary = [];
 const table = document.querySelector('table');
 const newBook = document.querySelector('.newBook')
-const deleteButton = document.querySelectorAll('.delete')
+const deleteButton = document.getElementsByClassName('delete')
 let titleRow = document.querySelector('.titleRow')
 let authorRow = document.querySelector('.authorRow')
 let pagesRow = document.querySelector('.pagesRow')
 let readRow = document.querySelector('.readRow')
 let deleteRow = document.querySelector('.deleteRow')
 
-
-
-for (i = 0; i < deleteButton.length; i++) {
-    deleteButton[i].addEventListener('click', e => {
-        console.log('clicked');
-    })
-}
 
 function Book (title, author, pages, read, index) {
     this.index = index,
@@ -26,6 +19,8 @@ function Book (title, author, pages, read, index) {
 
 
 
+
+
 const addBookToLibrary = () => {
     const inputTitle = prompt('Input Title')
     const inputAuthor = prompt('Input Author')
@@ -34,9 +29,9 @@ const addBookToLibrary = () => {
     const index = myLibrary.length
     const addBook = new Book(inputTitle, inputAuthor, inputPages, inputRead, index)
     myLibrary.push(addBook)
-    console.log(myLibrary);
     resetTable();
     addCells();
+
 }
 
 
@@ -62,10 +57,11 @@ const addCells = () => {
         let readCell = document.createElement('td')
         let deleteCell =document.createElement('td')
         deleteCell.classList.add('customCell')
+        deleteCell.classList.add('delete')
         deleteCell.id = i
         let deleteIcon = document.createElement('img')
-        deleteIcon.classList.add('delete')
         deleteIcon.src = 'icons/delete.svg'
+        deleteIcon.id = i
         deleteCell.appendChild(deleteIcon)
         titleHead.id = i
         titleHead.textContent = myLibrary[i].title
@@ -83,6 +79,15 @@ const addCells = () => {
         deleteRow.appendChild(deleteCell)
     }
 
+    console.log(deleteButton);
+    for(i = 0; i < deleteButton.length; i++) {
+        deleteButton[i].addEventListener('click', e => {
+            selectedIndex = e.target.id
+            myLibrary.splice(selectedIndex, 1)
+            resetTable();
+            addCells();
+        })
+    }
 }
 
 
