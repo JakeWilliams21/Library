@@ -1,7 +1,10 @@
-let myLibrary = [];
+let myLibrary = [
+    
+];
 const table = document.querySelector('table');
 const newBook = document.querySelector('.newBook')
 const deleteButton = document.getElementsByClassName('delete')
+const readButton = document.getElementsByClassName('read')
 let titleRow = document.querySelector('.titleRow')
 let authorRow = document.querySelector('.authorRow')
 let pagesRow = document.querySelector('.pagesRow')
@@ -17,6 +20,21 @@ function Book (title, author, pages, read, index) {
     this.read = read
 }
 
+Book.prototype.changeRead = (index) => {
+    let readProp = myLibrary[index].read;
+    readProp = readProp.toLowerCase();
+    console.log(readProp);
+    if (readProp === 'yes') {
+        myLibrary[index].read = 'No'
+    } else if (readProp === 'no') {
+        myLibrary[index].read = 'Yes'
+    } else {
+        alert('Invalid Read Value')
+    }
+
+    resetTable();
+    addCells();
+}
 
 
 
@@ -25,7 +43,7 @@ const addBookToLibrary = () => {
     const inputTitle = prompt('Input Title')
     const inputAuthor = prompt('Input Author')
     const inputPages = prompt('Input Number of Pages')
-    const inputRead = prompt('Have you read this book? Input (true/false)')
+    const inputRead = prompt('Have you read this book? Input (Yes/No)')
     const index = myLibrary.length
     const addBook = new Book(inputTitle, inputAuthor, inputPages, inputRead, index)
     myLibrary.push(addBook)
@@ -55,6 +73,8 @@ const addCells = () => {
         let authorCell = document.createElement('td')
         let pagesCell = document.createElement('td')
         let readCell = document.createElement('td')
+        readCell.classList.add('read')
+        readCell.id = i
         let deleteCell =document.createElement('td')
         deleteCell.classList.add('customCell')
         deleteCell.classList.add('delete')
@@ -86,6 +106,13 @@ const addCells = () => {
             myLibrary.splice(selectedIndex, 1)
             resetTable();
             addCells();
+        })
+    }
+
+    for(i = 0; i < readButton.length; i++) {
+        readButton[i].addEventListener('click', e => {
+            bookID = e.target.id
+            myLibrary[bookID].changeRead(bookID);
         })
     }
 }
